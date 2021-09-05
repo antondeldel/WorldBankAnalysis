@@ -1,5 +1,5 @@
-from numpy.core.numeric import loads
 from . import url_links
+from . import connection_string
 
 import requests
 import json
@@ -28,7 +28,7 @@ class CountryFetcher:
         self.total_countries = int(a[0]['total'])
         df = pd.read_json(json.dumps(a[1]), orient='records')
         
-        for k in ['adminregion','lendingType','region']:
+        for k in ['adminregion','lendingType','region','incomeLevel']:
             df[k] =  df[k].str['value']
 
         for col in url_links.keys:
@@ -69,5 +69,11 @@ class CountryFetcher:
         
         pass
 
-    def save_output():
+    def save_output(self):
+        self.data.to_sql('base'
+                ,con=connection_string.engine
+                ,if_exists = 'replace')
+        self.detailed_country_data.to_sql('gdp'
+                ,con=connection_string.engine
+                ,if_exists='replace')
         pass

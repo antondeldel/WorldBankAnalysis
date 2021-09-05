@@ -5,9 +5,9 @@ if __name__ == '__main__':
     runner = fetcher_class.CountryFetcher()
     runner.refresh_country_list()
     runner.refresh_detailed_data()
-    runner.save_output()
+    
     #Save information to Postgress database
-
+    runner.save_output()
     #Execute SQL queries
-
+    
     #Generate visualisation
