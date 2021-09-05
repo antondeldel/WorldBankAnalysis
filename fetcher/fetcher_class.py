@@ -7,6 +7,7 @@ from collections import defaultdict
 import pandas as pd
 import zipfile
 import os
+import plotly.express as px
 
 class CountryFetcher:
     def __init__(self) -> None:
@@ -80,7 +81,7 @@ class CountryFetcher:
         pass
 
     def answer_sql_questions(self):
-        import os
+
         files = sorted(['sql/'+x for x in os.listdir('sql')])
         for index, q in enumerate(files):
             with open(q) as a:
@@ -90,3 +91,8 @@ class CountryFetcher:
             print('The answer to Question',index+1,'is')
             print(df)
             print('|','-'*20,'|')
+    
+    def save_to_html(self):
+        
+        fig =px.scatter(x=range(10), y=range(10))
+        fig.write_html(os.path.join(os.getcwd(),"graphs.html"))

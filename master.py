@@ -11,3 +11,4 @@ if __name__ == '__main__':
     #Execute SQL queries
     runner.answer_sql_questions()
     #Generate visualisation
+    runner.save_to_html()
