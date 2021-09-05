@@ -15,7 +15,8 @@ class CountryFetcher:
         self.detailed_country_data = pd.DataFrame(columns=url_links.keys)
         self.total_countries = 0
         self.detailed_country_data = pd.DataFrame(columns=url_links.gdp_keys)
-        
+        self.raw_gbp = pd.DataFrame(columns=url_links.gdp_keys)
+
         pass
 
     def refresh_country_list(self):
@@ -45,7 +46,7 @@ class CountryFetcher:
         Wrapper function for the country-level query
 
         '''
-        url = 'https://databank.worldbank.org/data/download/GEP_CSV.zip'
+        url = url_links.movement_gdp
         r = requests.get(url, stream=True)
         save_path = (os.path.join(os.getcwd(),'data','data.zip'))
         print('Downloading files')
@@ -77,3 +78,11 @@ class CountryFetcher:
                 ,con=connection_string.engine
                 ,if_exists='replace')
         pass
+
+    def answer_sql_questions(self):
+        import os
+        files = sorted(['sql/'+x for x in os.listdir('sql')])
+        for index, q in enumerate(files):
+            df = pd.read_sql(q, con = connection_string.engine)
+            print('The answer to Question',index+1,'is')
+            print(df)
