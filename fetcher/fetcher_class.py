@@ -83,6 +83,10 @@ class CountryFetcher:
         import os
         files = sorted(['sql/'+x for x in os.listdir('sql')])
         for index, q in enumerate(files):
+            with open(q) as a:
+                q = a.read()
             df = pd.read_sql(q, con = connection_string.engine)
+            print('|','-'*20,'|')
             print('The answer to Question',index+1,'is')
             print(df)
+            print('|','-'*20,'|')

@@ -9,5 +9,5 @@ if __name__ == '__main__':
     #Save information to Postgress database
     runner.save_output()
     #Execute SQL queries
-    
+    runner.answer_sql_questions()
     #Generate visualisation
