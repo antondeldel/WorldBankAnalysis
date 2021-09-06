@@ -16,7 +16,6 @@ class CountryFetcher:
         self.detailed_country_data = pd.DataFrame(columns=url_links.keys)
         self.total_countries = 0
         self.detailed_country_data = pd.DataFrame(columns=url_links.gdp_keys)
-        self.raw_gbp = pd.DataFrame(columns=url_links.gdp_keys)
 
         pass
 
@@ -47,7 +46,7 @@ class CountryFetcher:
         Wrapper function for the country-level query
 
         '''
-        url = url_links.movement_gdp
+        url = url_links.correct_gbp
         r = requests.get(url, stream=True)
         save_path = (os.path.join(os.getcwd(),'data','data.zip'))
         print('Downloading files')
@@ -57,13 +56,14 @@ class CountryFetcher:
         
 
         zf = zipfile.ZipFile(save_path)
-        dfs = [pd.read_csv(zf.open(f), sep=",",header=0) for f in zf.namelist()][0]
+        f = sorted(zf.namelist())[0]
+        dfs = pd.read_csv(zf.open(f), sep=",",header=2)
 
         dfs2 = pd.melt(dfs
             ,id_vars=['Country Name', 'Country Code', 'Indicator Name', 'Indicator Code']
             ,var_name='Year'
-            ,value_name='Change')
-        dfs2 = dfs2.loc[(-dfs2['Year'].str.contains('Un')) & (-dfs2.Change.isna())]
+            ,value_name='Value')
+        dfs2 = dfs2.loc[(-dfs2['Year'].str.contains('Un')) & (-dfs2.Value.isna())]
         for key in url_links.gdp_keys:
             if key not in dfs2.columns:
                 dfs2[key] = ''
