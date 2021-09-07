@@ -10,5 +10,5 @@ From
 
 ) a
 where a.chekk < 4
-and 
+
 order by region;
